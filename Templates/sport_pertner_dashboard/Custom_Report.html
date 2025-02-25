@@ -1,0 +1,127 @@
+{% extends "sport_pertner_dashboard/base2.html" %}
+
+{% block content %}
+<style>
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Left Panel -->
+        <div class="col-lg-9 left-panel">
+            <!-- Fixed Header Card -->
+            <div class="card fixed-card shadow-sm border-0 p-4 mb-2" style="height: 250px; overflow-y: auto;">
+                <h5 class="text-success d-flex align-items-center gap-3">
+                    <i class="fas fa-file-alt text-success"></i> Generate Your Report According to the Contract
+                </h5>
+                <p class="text-dark d-flex align-items-center">
+                    You can also use the right panel to create your own report as well.
+                </p>
+
+                <!-- Form -->
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="contract" class="form-label">Pick contract</label>
+                        <select id="contract" name="contract" class="form-select">
+                            <option>---Select Contract---</option>
+                            {% for contract in contracts %}
+                                <option value="{{ contract.id }}">{{ contract.sport_provider.company_name }} - {{ contract.sport_partner.company_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="from" class="form-label">Pick starting date</label>
+                        <input type="date" class="form-control" name="from" id="from" value="{{ from_date }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="to" class="form-label">Pick ending date</label>
+                        <input type="date" class="form-control" name="to" id="to" value="{{ to_date }}" required>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-success me-md-2">
+                            <i class="fas fa-check me-2"></i> Generate
+                        </button>
+                        <a href="{% url 'Custom_Report' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-2"></i> Clear
+                        </a>
+                    </div>
+                </form>
+                
+            </div>
+            
+            <!-- Scrollable Content -->
+            <div class="next-table card shadow-sm border-0">
+                <div class="d-flex justify-content-end p-3">
+                    <button class="btn btn-danger me-2" onclick="exportToPDF()">
+                        <i class="fas fa-file-pdf"></i> PDF
+                    </button>
+                    <button class="btn btn-success me-2" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel"></i> Excel
+                    </button>
+                    <button class="btn btn-primary" onclick="sharePDF()">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+
+                <!-- Table or Message Display -->
+                <div class="table-responsive p-2">
+                    <p class="text-dark d-flex align-items-center">Monthly Report for {{ company_name }}</p>
+                    
+                    {% if from_date and to_date %}
+                        <p class="text-dark d-flex align-items-center">From: {{ from_date }} To: {{ to_date }}</p>
+                    {% endif %}
+
+                    {% if message %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ message }}
+                        </div>
+                    {% elif attendances %}
+                        <table class="table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Sport Worker</th>
+                                    <th>From</th>
+                                    <th>to</th>
+                                    <th>Activity</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for attendance in attendances %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ attendance.sport_work.first_name }} {{ attendance.sport_work.last_name }}</td>
+                                    <td>{{ attendance.sport_provider.company_name }}</td>
+                                    <td>{{ attendance.sport_partner.company_name }}</td>
+                                    <td>{{ attendance.sport_activity.activity_name }}</td>
+                                    <td>{{ attendance.activity_date }}</td>
+                                    <td>{{ attendance.activity_time }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-danger">No attendances found for the selected contract and date range.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        {% include 'sport_pertner_dashboard/Right_Panel.html' %}
+    </div>
+</div>
+
+
+
+{% endblock %}

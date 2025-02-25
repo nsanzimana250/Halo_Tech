@@ -1,0 +1,102 @@
+body {
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Left Panel: Responsive width and layout */
+.left-panel {
+    width: 100%; /* Full width on small screens */
+    position: relative; /* Change to relative for mobile */
+    top: 0;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Right Panel: Responsive width and layout */
+.right-panel {
+    width: 100%; /* Full width on small screens */
+    position: relative; /* Change to relative for mobile */
+    top: 0;
+    padding: 20px;
+    background: #fff;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove border-radius from all cards */
+.card {
+    border-radius: 0 !important;
+}
+
+.card-hover {
+    cursor: pointer;
+    border: none;
+    padding: 15px;
+    text-align: center;
+}
+
+.card-hover i {
+    font-size: 2rem;
+}
+
+.card-hover p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Fixed Header Card */
+.fixed-card {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensure it stays above other content */
+    background: white; /* Match the background color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for separation */
+}
+
+/* Media Queries for Responsive Design */
+@media (min-width: 768px) {
+    /* Adjust layout for tablets and larger screens */
+    .left-panel {
+        width: 75%; /* Fixed width for larger screens */
+        position: fixed;
+        left: 0;
+        top: 56px;
+        bottom: 0;
+        overflow-y: auto;
+    }
+
+    .right-panel {
+        width: 25%; /* Fixed width for larger screens */
+        position: fixed;
+        right: 0;
+        top: 56px;
+        bottom: 0;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Stack panels vertically on small screens */
+    .left-panel, .right-panel {
+        width: 100%;
+        position: relative;
+        top: 0;
+        margin-bottom: 20px; /* Add spacing between panels */
+    }
+
+    .fixed-card {
+        position: relative; /* Disable sticky header on small screens */
+    }
+}

@@ -1,0 +1,77 @@
+<div class="col-lg-3 right-panel">
+    <div class="card shadow-sm border-0 p-4">
+        <!-- Include Message Section -->
+        {% include 'sport_pertner_dashboard/message.html' %}
+
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <p class="font-weight-bold text-dark">View All Reports Here!</p>
+            <hr>
+        </div>
+
+        <!-- Cards Section -->
+        <div class="row">
+            <!-- Employees Card -->
+            <div class="col-6 mb-4">
+                <a href="{% url 'sport_partner_dashboard' %}" class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-users mb-3" style="color: #ff6347;"></i> <!-- Tomato color -->
+                        <p class="mb-0">Employees</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Daily Report Card -->
+            <div class="col-6 mb-4">
+                <a href="{% url 'day_report' %}" class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-calendar-day mb-3" style="color: #1e90ff;"></i> <!-- DodgerBlue color -->
+                        <p class="mb-0">Daily</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Monthly Report Card -->
+            <div class="col-6 mb-4">
+                <a href="{% url 'Monthly_Report' %}" class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-calendar-alt mb-3" style="color: #32cd32;"></i> <!-- LimeGreen color -->
+                        <p class="mb-0">Monthly</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Custom Report Card -->
+            <div class="col-6 mb-4">
+                <a href="{% url 'Custom_Report' %}" class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-file-alt mb-3" style="color: #ff4500;"></i> <!-- OrangeRed color -->
+                        <p class="mb-0">Custom</p>
+                    </div>
+                </a>
+            </div>
+
+
+
+        </div>
+    </div>
+
+<!-- Footer -->
+<footer class="text-center text-muted py-3 bg-white border-top mt-2">
+    <p>By using this site, you agree to our <a href="#" class="text-decoration-none">Terms and Conditions</a> and <a href="#" class="text-decoration-none">Privacy Policy</a>.</p>
+    <p>&copy; {% now "Y" %} Helo Tech. All rights reserved. Designed with <i class="fas fa-heart text-danger"></i> by <strong><a href="#" class="text-decoration-none">Helo Tech</a></strong>.</p>
+    <p>Need help? <a href="" class="text-decoration-none">Contact Support</a> or visit our <a href="" class="text-decoration-none">FAQ</a>.</p>
+    <div class="mt-2">
+        <p>Follow us on:</p>
+        <a href="#" class="me-2 text-decoration-none" aria-label="Facebook"><i class="fab fa-facebook fa-lg text-primary"></i></a>
+        <a href="#" class="me-2 text-decoration-none" aria-label="Twitter"><i class="fab fa-twitter fa-lg text-info"></i></a>
+        <a href="#" class="me-2 text-decoration-none" aria-label="LinkedIn"><i class="fab fa-linkedin fa-lg text-primary"></i></a>
+        <a href="#" class="text-decoration-none" aria-label="Instagram"><i class="fab fa-instagram fa-lg text-danger"></i></a>
+    </div>
+    <p class="mt-2">Subscribe to our newsletter for the latest updates and offers.</p>
+    <form class="d-flex justify-content-center">
+        <input type="email" class="form-control w-50 me-2" placeholder="Enter your email" aria-label="Email">
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
+</footer>
+</div>

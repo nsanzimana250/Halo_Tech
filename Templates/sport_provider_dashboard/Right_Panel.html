@@ -1,0 +1,87 @@
+<div class="col-lg-3 right-panel">
+    <div class="card shadow-sm border-0 p-4">
+            {% include 'sport_provider_dashboard/message.html' %}
+        <div class="text-center mb-4">
+            <p class="font-weight-bold text-dark">View All Reports Here!</p>
+            <hr>
+        </div>
+        <div class="row">
+
+            <div class="col-6 mb-4">
+                <a href="{% url 'sport_provider_dashboard' %}" class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-check mb-3 text-warning"></i> <!-- Changed to text-warning -->
+                        <p class="mb-0">Check</p>
+                    </div>
+                </a>
+            </div>
+            <!-- Daily Report Card -->
+            <div class="col-6 mb-4">
+                <a href=" {% url 'daily_report' %} " class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-calendar-day mb-3 text-success"></i> <!-- Changed to text-success -->
+                        <p class="mb-0">Daily</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Monthly Report Card -->
+            <div class="col-6 mb-4">
+                <a href="{% url 'monthly_report' %} " class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-calendar-alt mb-3 text-info"></i> <!-- Changed to text-info -->
+                        <p class="mb-0">Monthly</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Custom Report Card -->
+            <div class="col-6 mb-4">
+                <a href=" {% url 'Custom_Reports' %} " class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-file-alt mb-3 text-primary"></i> <!-- Changed to text-primary -->
+                        <p class="mb-0">Custom</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- AllsportWorker -->
+            <div class="col-6 mb-4">
+                <a href=" {% url 'AllsportWorker' %} " class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-list-alt mb-3 text-danger"></i> <!-- Changed to text-danger -->
+                        <p class="mb-0">All</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Contract Report Card -->
+            <div class="col-6 mb-4">
+                <a href="{% url 'Contract' %}" class="text-decoration-none">
+                    <div class="card shadow-lg text-center p-3 card-hover">
+                        <i class="fas fa-contact-card mb-3 text-muted"></i> <!-- Changed to text-muted -->
+                        <p class="mb-0">Contract</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+<footer class="text-center text-muted py-3 bg-white border-top mt-2">
+    <p>By using this site, you agree to our <a href="#" class="text-decoration-none">Terms and Conditions</a> and <a href="#" class="text-decoration-none">Privacy Policy</a>.</p>
+    <p>&copy; {% now "Y" %} Helo Tech. All rights reserved. Designed with <i class="fas fa-heart text-danger"></i> by <strong><a href="#" class="text-decoration-none">Helo Tech</a></strong>.</p>
+    <p>Need help? <a href="" class="text-decoration-none">Contact Support</a> or visit our <a href="" class="text-decoration-none">FAQ</a>.</p>
+    <div class="mt-2">
+        <p>Follow us on:</p>
+        <a href="#" class="me-2 text-decoration-none" aria-label="Facebook"><i class="fab fa-facebook fa-lg text-primary"></i></a>
+        <a href="#" class="me-2 text-decoration-none" aria-label="Twitter"><i class="fab fa-twitter fa-lg text-info"></i></a>
+        <a href="#" class="me-2 text-decoration-none" aria-label="LinkedIn"><i class="fab fa-linkedin fa-lg text-primary"></i></a>
+        <a href="#" class="text-decoration-none" aria-label="Instagram"><i class="fab fa-instagram fa-lg text-danger"></i></a>
+    </div>
+    <p class="mt-2">Subscribe to our newsletter for the latest updates and offers.</p>
+    <form class="d-flex justify-content-center">
+        <input type="email" class="form-control w-50 me-2" placeholder="Enter your email" aria-label="Email">
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
+</footer>
+</div>

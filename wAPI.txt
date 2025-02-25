@@ -1,0 +1,14 @@
+SMS_API_KEY=atsk_7fb98d6638479b28033ba3b4c2cf09fecabe1d270023eababbbffec99a2a76eca0b1fd1a
+DEBUG=True
+SECRET_KEY=my_super_secret_key
+
+
+africastalking.initialize(username='hellotech', api_key='atsk_7fb98d6638479b28033ba3b4c2cf09fecabe1d270023eababbbffec99a2a76eca0b1fd1a')
+sms = africastalking.SMS
+
+
+
+
+Account SID =AC5f2d76e7619411bbef7897c850cafde2
+Auth Token=d1520211bbc149f3ea3a03249a807768
+My Twilio phone number=+18573825130

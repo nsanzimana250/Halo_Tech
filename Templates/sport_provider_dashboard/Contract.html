@@ -1,0 +1,61 @@
+{% extends "sport_provider_dashboard/base.html" %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Left Panel -->
+        <div class="col-lg-9 left-panel">
+            <!-- Header Card -->
+            <div class="card fixed-card shadow-sm border-0 p-4 mb-2">
+                <h5 class="text-success d-flex align-items-center">
+                    <i class="fas fa-users me-2"></i>  All Contracts Overview
+                </h5>
+                <p class="text-dark">
+                </p>
+            </div>
+
+            <!-- Employee Table -->
+            <div class="next-table card shadow-sm border-0">
+                <div class="table-responsive p-2">
+                    <h6 class="text-dark d-flex align-items-center mb-3">
+                        All My Contracts
+                    </h6>
+
+                    {% if contract_records %}
+                    <table class="table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Sport Provider</th>
+                                <th>Sport Partner</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                                 <tbody>
+                        {% for contract in contract_records %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ contract.sport_provider.company_name }}</td>
+                                <td>{{ contract.sport_partner.company_name }}</td>
+                                <td>{{ contract.start_date }}</td>
+                                <td>{{ contract.end_date }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                    {% else %}
+                    <div class="alert alert-info mt-4">
+                        No contract records found.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        {% include 'sport_provider_dashboard/Right_Panel.html' %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "sport_pertner_dashboard/base2.html" %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Left Panel -->
+        <div class="col-lg-9 left-panel">
+            <!-- Header Card -->
+            <div class="card fixed-card shadow-sm border-0 p-4 mb-2">
+                <h5 class="text-success d-flex align-items-center">
+                    <i class="fas fa-users me-2"></i> Sport Workers Overview
+                </h5>
+                <p class="text-dark">
+                    Below is a detailed report of all sport workers under your partnership. You can view their information, 
+                    track their activity, and manage your team effectively.
+                </p>
+            </div>
+
+            <!-- Employee Summary -->
+            <div class="card border-0">
+                <h5 class="text-success d-flex align-items-center">
+                    <i class="fas fa-user-check me-2"></i> Total Employees:
+                    <strong class="ms-2">{{ total_employees }}</strong>
+                </h5>
+            </div>
+
+            <!-- Employee Table -->
+            <div class="next-table card shadow-sm border-0">
+                <div class="table-responsive p-2">
+                    <h6 class="text-dark d-flex align-items-center mb-3">
+                         List of Sport Workers
+                    </h6>
+
+                    <table class="table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Phone Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for worker in sport_workers %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ worker.first_name }}</td>
+                                <td>{{ worker.last_name }}</td>
+                                <td>{{ worker.phone_number }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">
+                                    No sport workers found. Please add employees to your partnership.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        {% include 'sport_pertner_dashboard/Right_Panel.html' %}
+    </div>
+</div>
+
+{% endblock %}

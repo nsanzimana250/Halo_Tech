@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helo Tech - Sign In</title> 
+    <!-- Bootstrap & Font Awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/Signln.css' %}">
+    <style>
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" 
+                     style="background-color: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; padding: 10px; border-radius: 5px;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>Welcome Back!</h2>
+        <p>We're glad to see you again. Sign in to access your account and continue your journey with us.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Username" name="username" required>
+            </div>
+            
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="Password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn btn-custom">Sign In</button>
+
+            <p class="forgot-password">
+            
+                <a href="#">Forgot password?</a>
+                Contact Us
+            </p>
+
+            <p>Don't have an account? <a href="">Contact Us</a> to get started.</p>
+            <p class="note">Make sure your Caps Lock is off and you're using the correct username and password.</p>
+            <p>Your security is our priority. All your data is encrypted and protected.</p>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
