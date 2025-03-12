@@ -1,6 +1,6 @@
 from django.urls import path
 from App import views
-from .views import  daily_report,monthly_report,AllsportWorker,Contract_list,day_report,Monthly_Report,Custom_Report,custom_reports
+from .views import  daily_report,monthly_report,AllsportWorker,Contract_list,day_report,Monthly_Report,Custom_Report,custom_reports,halo_tech_dashboard,SportProvidepage,SportPartnerpage
 
 urlpatterns = [
     path('login/', views.user_login, name='login'),
@@ -19,5 +19,12 @@ urlpatterns = [
     path('sport_partner_dashboard/day_report/', day_report, name='day_report'),
     path('sport_partner_dashboard/Monthly_Report/', Monthly_Report, name='Monthly_Report'),
     path('sport_partner_dashboard/Custom_Report/', Custom_Report, name='Custom_Report'),
+
+    # halo_tech_dashboard
+    path('halo_tech_dashboard/', halo_tech_dashboard, name='halo_tech_dashboard'),
+     path('halo_tech_dashboard/SportProvidepage/', SportProvidepage, name='SportProvidepage'),
+      path('halo_tech_dashboard/SportProvidepage/', SportProvidepage, name='SportProvidepage'),
+
+
     
 ]

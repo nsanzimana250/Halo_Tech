@@ -32,7 +32,7 @@ def user_login(request):
             is_sport_partner = SportPartner.objects.filter(user=user).exists()
 
             if user.is_superuser:
-                return redirect("/admin/")
+                return redirect("halo_tech_dashboard")
             elif is_sport_provider:
                 return redirect("sport_provider_dashboard")
             elif is_sport_partner:
@@ -534,3 +534,15 @@ def Custom_Report(request):
 # # Get a worker by phone number
 # worker = SportWorker.objects.filter(phone_number="+250789123456").first()
 # print(worker)
+
+@login_required
+def halo_tech_dashboard(request):
+    return render(request, "halo_tech_dashboard/halo.html")
+@login_required
+def SportProvidepage(request):
+    return render(request, "halo_tech_dashboard/SportProvider.html")
+@login_required
+def SportPartnerpage(request):
+    return render(request, "halo_tech_dashboard/SportPartner.html")
+
+# SportProvider.html

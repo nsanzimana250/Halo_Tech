@@ -1,0 +1,152 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  /* Dashboard Layout */
+  .dashboard {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* Left Side Navigation */
+  .left-side {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+  }
+  
+  .left-side nav ul {
+    list-style: none;
+  }
+  
+  .left-side nav ul li {
+    margin: 20px 0;
+  }
+  
+  .left-side nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .left-side nav ul li a i {
+    margin-right: 10px;
+  }
+  
+  /* Right Side Content */
+  .right-side {
+    margin-left: 250px; /* Same as left-side width */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Fixed Top Div */
+  .fixed-top {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .fixed-top h1 {
+    font-size: 24px;
+    color: #2c3e50;
+  }
+  /* Scrollable Content with Cards */
+.scrollable-content {
+    padding: 10px;
+    overflow-y: scroll;
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Responsive and Smallest Card */
+  .card {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px; /* Smallest size */
+    min-width: 100px;
+  }
+  
+  /* Icon Styling */
+  .card .amazing-icon {
+    font-size: 24px; /* Smaller icon */
+    color: #e67e22;
+    margin-bottom: 5px;
+  }
+  
+  /* Heading Styling */
+  .card h2 {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  /* Paragraph Styling */
+  .card p {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  
+  
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .left-side {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+  
+    .right-side {
+      margin-left: 0;
+    }
+  
+    .dashboard {
+      flex-direction: column;
+    }
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 480px) {
+    .card {
+      width: 100px; /* Smaller size for mobile */
+      padding: 8px;
+    }
+    .card .amazing-icon {
+      font-size: 20px;
+    }
+    .card h2 {
+      font-size: 12px;
+    }
+    .card p {
+      font-size: 10px;
+    }
+  }
