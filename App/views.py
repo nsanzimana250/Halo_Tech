@@ -7,6 +7,11 @@ from django.utils import timezone
 import random
 import africastalking
 from datetime import datetime
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import SportProvider, SportActivity, Contract, SportPartner, AllowedActivity, SportWorker
+from .forms import SportActivityForm, ContractForm
+from django.contrib.auth.decorators import login_required
 
 # Africa's Talking Credentials
 africastalking.initialize(username='heloteck', api_key='atsk_c5c688c3b92798e5d6df618317734b7edd81cf547a8e70a3e33ebcfe19e61b0deb6ab53a')
@@ -535,14 +540,277 @@ def Custom_Report(request):
 # worker = SportWorker.objects.filter(phone_number="+250789123456").first()
 # print(worker)
 
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import SportProvider, SportPartner, SportWorker, SportCode, SportActivity, Contract, Attendance, AllowedActivity
+
 @login_required
 def halo_tech_dashboard(request):
-    return render(request, "halo_tech_dashboard/halo.html")
+    # Fetch all data
+    sport_providers = SportProvider.objects.all()
+    sport_partners = SportPartner.objects.all()
+    sport_workers = SportWorker.objects.all()
+    sport_codes = SportCode.objects.all()
+    sport_activities = SportActivity.objects.all()
+    contracts = Contract.objects.all()
+    attendances = Attendance.objects.all()
+    allowed_activities = AllowedActivity.objects.all()
+
+    # Statistics
+    total_providers = sport_providers.count()
+    total_partners = sport_partners.count()
+    total_workers = sport_workers.count()
+    total_activities = sport_activities.count()
+    total_contracts = contracts.count()
+    total_attendances = attendances.count()
+
+    # Pass data to the template
+    context = {
+        'sport_providers': sport_providers,
+        'sport_partners': sport_partners,
+        'sport_workers': sport_workers,
+        'sport_codes': sport_codes,
+        'sport_activities': sport_activities,
+        'contracts': contracts,
+        'attendances': attendances,
+        'allowed_activities': allowed_activities,
+        'total_providers': total_providers,
+        'total_partners': total_partners,
+        'total_workers': total_workers,
+        'total_activities': total_activities,
+        'total_contracts': total_contracts,
+        'total_attendances': total_attendances,
+    }
+    return render(request, "halo_tech_dashboard/halo.html", context)
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages  # Import messages
+from django.shortcuts import render, redirect
+from .models import SportProvider
+from .forms import SportProviderForm
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def users(request):
+    all_users = User.objects.all()
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "User created successfully!")  # Add success message
+            return redirect('users')
+        else:
+            messages.error(request, "Error creating user. Please check the form.")  # Add error message
+
+    return render(request, "halo_tech_dashboard/users.html", {
+        'users': all_users,
+        'form': form,
+    })
+
+
 @login_required
 def SportProvidepage(request):
-    return render(request, "halo_tech_dashboard/SportProvider.html")
+    sport_providers = SportProvider.objects.all()
+    search_query = request.GET.get('search', '')
+    if search_query:
+        sport_providers = sport_providers.filter(company_name__icontains=search_query)
+    if request.method == 'POST':
+        form = SportProviderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('SportProvidepage') 
+    else:
+        form = SportProviderForm()
+    return render(request, "halo_tech_dashboard/SportProvider.html", {
+        'sport_providers': sport_providers,
+        'form': form,
+        'search_query': search_query,
+    })
+
+
+from django.shortcuts import render, redirect
+from .models import SportPartner
+from .forms import SportPartnerForm
+from django.contrib.auth.decorators import login_required
+
 @login_required
 def SportPartnerpage(request):
-    return render(request, "halo_tech_dashboard/SportPartner.html")
+    # Fetch all SportPartner objects from the database
+    sport_partners = SportPartner.objects.all()
 
-# SportProvider.html
+    # Handle search query
+    search_query = request.GET.get('search', '')
+    if search_query:
+        sport_partners = sport_partners.filter(company_name__icontains=search_query)
+
+    # Handle form submission for creating a new sport partner
+    if request.method == 'POST':
+        form = SportPartnerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('SportPartnerpage')  # Redirect to the same page after saving
+    else:
+        form = SportPartnerForm()
+
+    # Pass the form, sport partners, and search query to the template
+    return render(request, "halo_tech_dashboard/SportPartner.html", {
+        'sport_partners': sport_partners,
+        'form': form,
+        'search_query': search_query,
+    })
+
+
+@login_required
+def SportProviderDetails(request, pk):
+    # Fetch the specific SportProvider by primary key (pk)
+    provider = get_object_or_404(SportProvider, pk=pk)
+    
+    # Fetch all SportActivity objects related to this SportProvider
+    activities = SportActivity.objects.filter(sport_provider=provider)
+    
+    # Fetch all Contract objects related to this SportProvider
+    contracts = Contract.objects.filter(sport_provider=provider)
+    
+    # Fetch AllowedActivity objects for each contract
+    allowed_activities = {}
+    for contract in contracts:
+        allowed_activities[contract.id] = AllowedActivity.objects.filter(contract=contract)
+    
+    # Fix: Correctly count SportWorker instances associated with this SportProvider
+    sport_workers_count = SportWorker.objects.filter( 
+    sport_partner__in=SportPartner.objects.filter(
+        id__in=Contract.objects.filter(sport_provider=provider).values_list("sport_partner", flat=True)
+    )).count()
+
+    
+    # Handle form submission for creating a new SportActivity or Contract
+    if request.method == 'POST':
+        if 'activity_form' in request.POST:  # Check if the activity form is submitted
+            activity_form = SportActivityForm(request.POST)
+            if activity_form.is_valid():
+                activity = activity_form.save(commit=False)
+                activity.sport_provider = provider  # Associate the activity with the provider
+                activity.save()
+                return redirect('sport_provider_details', pk=provider.pk)
+        elif 'contract_form' in request.POST:  # Check if the contract form is submitted
+            contract_form = ContractForm(request.POST)
+            if contract_form.is_valid():
+                contract = contract_form.save(commit=False)
+                contract.sport_provider = provider  # Associate the contract with the provider
+                contract.save()
+                return redirect('sport_provider_details', pk=provider.pk)
+    else:
+        activity_form = SportActivityForm()
+        contract_form = ContractForm()
+    
+    # Pass the provider, activities, contracts, allowed_activities, sport_workers_count, and forms to the template
+    return render(request, "halo_tech_dashboard/SportProvide_details.html", {
+        'provider': provider,
+        'activities': activities,
+        'contracts': contracts,
+        'allowed_activities': allowed_activities,
+        'sport_workers_count': sport_workers_count,
+        'activity_form': activity_form,
+        'contract_form': contract_form,
+    })
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import SportPartner, SportWorker, Contract, AllowedActivity
+from .forms import SportWorkerForm  # Import the SportWorkerForm
+
+def SportPartner_details(request, pk):
+    # Fetch the SportPartner object based on the provided pk
+    partner = get_object_or_404(SportPartner, pk=pk)
+    
+    # Fetch all SportWorker objects related to this SportPartner
+    workers = partner.sport_works.all()
+    
+    # Fetch all Contract objects related to this SportPartner
+    contracts = partner.contracts.all()
+    
+    # Fetch allowed activities for each contract
+    contracts_with_activities = []
+    for contract in contracts:
+        allowed_activities = contract.allowed_activities.all()  # Use the related_name
+        contracts_with_activities.append({
+            'contract': contract,
+            'allowed_activities': allowed_activities,
+        })
+    
+    # Handle form submissions
+    if request.method == 'POST':
+        if 'add_worker' in request.POST:  # Check if the worker form was submitted
+            form = SportWorkerForm(request.POST)
+            if form.is_valid():
+                worker = form.save(commit=False)
+                worker.sport_partner = partner  # Associate the worker with the current partner
+                worker.save()
+                return redirect('SportPartner_details', pk=partner.pk)
+    else:
+        form = SportWorkerForm()
+    
+    # Pass the partner, workers, contracts_with_activities, and form to the template
+    return render(request, 'halo_tech_dashboard/SportPartner_details.html', {
+        'partner': partner,
+        'workers': workers,
+        'contracts_with_activities': contracts_with_activities,
+        'form': form,
+    })
+
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Contract
+from .forms import ContractForm
+
+@login_required
+def CreateContract(request):
+    # Fetch all existing contracts
+    contracts = Contract.objects.all()
+    
+    # Handle form submission
+    if request.method == 'POST':
+        form = ContractForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the new contract
+            return redirect('CreateContract')  # Redirect to the same page after saving
+    else:
+        form = ContractForm()
+    
+    # Pass the form and contracts to the template
+    return render(request, 'halo_tech_dashboard/CreateContract.html', {
+        'form': form,
+        'contracts': contracts,
+    })
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import AllowedActivity
+from .forms import AllowedActivityForm
+
+@login_required
+def AllowedActivitys(request):
+    # Fetch all existing allowed activities
+    allowed_activities = AllowedActivity.objects.all()
+    
+    # Handle form submission
+    if request.method == 'POST':
+        form = AllowedActivityForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the new allowed activity
+            return redirect('AllowedActivitys')  # Redirect to the same page after saving
+    else:
+        form = AllowedActivityForm()
+    
+    # Pass the form and allowed activities to the template
+    return render(request, 'halo_tech_dashboard/AllowedActivity.html', {
+        'form': form,
+        'allowed_activities': allowed_activities,
+    })

@@ -1,0 +1,125 @@
+{% extends "halo_tech_dashboard/base_hala.html" %}
+
+{% block content %}
+<div class="container-fluid d-grid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-2">
+        <h4 class="mb-0"><i class="fas fa-building mr-2"></i> Details</h4>
+        <a href="{% url 'SportProvidepage' %}" class="btn btn-outline-success">
+            <i class="fas fa-arrow-left mr-2"></i>
+        </a>
+    </div>
+
+    <!-- Provider Details Card -->
+    <div class="shadow-lg border-0 rounded-3 mb-4">
+        <div class="card-body p-4">
+            <h5 class="card-title text-success font-weight-bold">{{ provider.company_name }}</h5>
+            <hr>
+            <p class="mb-2"><i class="fas fa-envelope text-muted mr-2"></i><strong>Email:</strong> {{ provider.company_email }}</p>
+            <p class="mb-2"><i class="fas fa-phone-alt text-muted mr-2"></i><strong>Phone:</strong> {{ provider.company_phone }}</p>
+            <p class="mb-2"><i class="fas fa-map-marker-alt text-muted mr-2"></i><strong>Address:</strong> {{ provider.company_address }}</p>
+            <p class="mb-0"><i class="fas fa-user text-muted mr-2"></i><strong>User:</strong> <span class="badge badge-success">{{ provider.user.username }}</span></p>
+        </div>
+    </div>
+
+    <!-- Activities Section -->
+    <div class="shadow-lg border-0 rounded-3 mb-4">
+        <div class="card-header bg-white text-bg-dark d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-running mr-2"></i>Sport Activities</h5>
+            <!-- Button to Trigger Modal -->
+            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#createSportActivityModal">
+                <i class="fas fa-plus mr-2"></i>Add Sport
+            </button>
+        </div>
+        <div class="card-body p-4">
+            {% if activities %}
+                <ul class="list-group list-group-flush">
+                    {% for activity in activities %}
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success mr-2"></i>
+                            <span class="font-weight-bold">{{ activity.activity_name }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted text-center"><i class="fas fa-exclamation-circle mr-2"></i>No activities found for this provider.</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+<!-- Contracts Section -->
+{% load custom_filters %}
+<div class="shadow-lg border-0 rounded-3">
+    <div class="card-header bg-white text-bg-dark d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-file-contract mr-2"></i>Contracts</h5>
+    </div>
+    <div class="card-body p-4">
+        {% if contracts %}
+            <ul class="list-group list-group-flush">
+                {% for contract in contracts %}
+                    <li class="list-group-item d-flex align-items-center">
+                        <i class="fas fa-file-signature text-success mr-2"></i>
+                        <span class="font-weight-bold">
+                            {{ contract.sport_partner.company_name }} ({{ contract.start_date }} to {{ contract.end_date }})
+                        </span>
+                        <!-- Display Allowed Activities for this Contract -->
+                        <ul class="list-group list-group-flush">
+                            {% for allowed_activity in allowed_activities|get_item:contract.id %}
+                                <li class="list-group-item">
+                                    {{ allowed_activity.sport_activity.activity_name }} - Allowed: {{ allowed_activity.allowed }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+                <!-- Display the count of Sport Workers -->
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <p class="text-muted"> <i class="fas fa-users mr-2 text-success "></i>Employees : {{ sport_workers_count }}</p>
+                    </li>
+                </ul>
+
+            </ul>
+        {% else %}
+            <p class="text-muted text-center"><i class="fas fa-exclamation-circle mr-2"></i>No contracts found for this provider.</p>
+        {% endif %}
+    </div>
+</div>
+
+    <!-- Modal for Creating New Sport Activity -->
+    <div class="modal fade" id="createSportActivityModal" tabindex="-1" aria-labelledby="createSportActivityModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createSportActivityModalLabel">Create New Sport Activity</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'sport_provider_details' provider.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="activity_form" value="true">
+                        <div class="form-group">
+                            <label for="{{ activity_form.activity_name.id_for_label }}">Activity Name</label>
+                            {{ activity_form.activity_name }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                <i class="fas fa-times mr-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i>Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+</div>
+{% endblock %}

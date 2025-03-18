@@ -1,18 +1,97 @@
 {% extends "halo_tech_dashboard/base_hala.html" %}
 
 {% block content %}
-      <!-- Scrollable Content with Cards -->
-      <div class="scrollable-content">
-        <div class="card">
-          <i class="fas fa-star amazing-icon"></i>
-          <h2>Card Title 1</h2>
-          <p>This is a sample card with an amazing icon.</p>
-        </div>
-        <div class="card">
-          <i class="fas fa-heart amazing-icon"></i>
-          <h2>Card Title 2</h2>
-          <p>This is another sample card with an amazing icon.</p>
-        </div>
-        </div>
+<div class="container-fluid p-4">
+    <h4 class="mb-4">Sport Providers</h4>
 
-{% endblock %}
+    <!-- Button to Trigger Modal -->
+    <div class="">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createSportProviderModal">
+            <i class="fas fa-plus mr-2"></i>Create New
+        </button>
+    </div>
+
+    <!-- Search by Name -->
+    <div class="mb-4  shadow bg-white p-3">
+        <form method="get" action="{% url 'SportProvidepage' %}" >
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search " value="{{ search_query }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+<!-- List-Based Layout to List All Sport Providers -->
+<div class="list-group shadow p-3 ">
+    {% for provider in sport_providers %}
+    <a href="{% url 'sport_provider_details' provider.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fa-solid fa-layer-group text-success"></i> {{ provider.company_name }}
+        </div>
+        <div>
+            <i class="fa-solid fa-user text-success"></i> {{ provider.user.username }}
+        </div>
+    </a>
+    {% empty %}
+    <div class="list-group-item text-center">
+        <i class="fa-solid fa-exclamation-circle"></i> No sport providers found.
+    </div>
+    {% endfor %}
+</div>
+
+    <!-- Modal for Creating New Sport Provider -->
+    <div class="modal fade" id="createSportProviderModal" tabindex="-1" aria-labelledby="createSportProviderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createSportProviderModalLabel">Create New Sport Provider</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'SportProvidepage' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ form.company_name.id_for_label }}">Company Name</label>
+                            {{ form.company_name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.company_email.id_for_label }}">Company Email</label>
+                            {{ form.company_email }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.company_phone.id_for_label }}">Company Phone</label>
+                            {{ form.company_phone }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.company_address.id_for_label }}">Company Address</label>
+                            {{ form.company_address }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.user.id_for_label }}">User</label>
+                            {{ form.user }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                <i class="fas fa-times mr-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i>Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- contract section  -->
+     
+</div>
+{% endblock %}  

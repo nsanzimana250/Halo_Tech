@@ -1,18 +1,270 @@
 {% extends "halo_tech_dashboard/base_hala.html" %}
 
 {% block content %}
-      <!-- Scrollable Content with Cards -->
-      <div class="scrollable-content">
-        <div class="card">
-          <i class="fas fa-star amazing-icon"></i>
-          <h2>Card Title 1</h2>
-          <p>This is a sample card with an amazing icon.</p>
+<div class="container-fluid p-4">
+    <h6 class="mb-4 text-center bg-dark text-white py-3 rounded">
+        <i class="fas fa-chart-bar"></i> Dashboard Statistics
+    </h6>
+
+    <!-- Statistics Cards -->
+    <div class="container-fluid p-4">
+        <h6 class="mb-4">Dashboard Statistics</h6>
+    
+        <!-- Statistics Cards with Charts -->
+        <div class="row mb-4">
+            <!-- Providers Card -->
+            <div class="col-md-2">
+                <div class=" shadow bg-white text-dark">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="fas fa-user-tie"></i> Providers</h6>
+                        <canvas id="providersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Partners Card -->
+            <div class="col-md-2">
+                <div class=" shadow bg-white text-dark">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="fas fa-handshake"></i> Partners</h6>
+                        <canvas id="partnersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Workers Card -->
+            <div class="col-md-2">
+                <div class=" shadow bg-white text-dark">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="fas fa-users"></i> Workers</h6>
+                        <canvas id="workersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Activities Card -->
+            <div class="col-md-2">
+                <div class=" shadow bg-white text-dark">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="fas fa-running"></i> Activities</h6>
+                        <canvas id="activitiesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Contracts Card -->
+            <div class="col-md-2">
+                <div class="shadow bg-white text-dark">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="fas fa-file-contract"></i> Contracts</h6>
+                        <canvas id="contractsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Attendances Card -->
+            <div class="col-md-2">
+                <div class=" shadow bg-white text-dark">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="fas fa-calendar-check"></i> Attendances</h6>
+                        <canvas id="attendancesChart"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-heart amazing-icon"></i>
-          <h2>Card Title 2</h2>
-          <p>This is another sample card with an amazing icon.</p>
-        </div>
+    
+        <!-- Data Tables (unchanged) -->
+        <!-- ... -->
+    
+    </div>
+    
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+
+    <!-- Data Tables -->
+    <div class="row">
+        <!-- Sport Providers Table -->
+        <div class="col-md-6 mb-4">
+            <div class="shadow">
+                <div class="card-header bg-dark text-white">
+                    <h6 class="card-title mb-0"><i class="fas fa-building"></i> Sport Providers</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table small table-bordered">
+                            <thead class="bg-dark text-white">
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for provider in sport_providers %}
+                                <tr>
+                                    <td>{{ provider.company_name }}</td>
+                                    <td>{{ provider.company_email }}</td>
+                                    <td>{{ provider.company_phone }}</td>
+                                    <td>{{ provider.company_address }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- Sport Partners Table -->
+        <div class="col-md-6 mb-4">
+            <div class="shadow">
+                <div class="card-header bg-success text-white">
+                    <h6 class="card-title mb-0"><i class="fas fa-handshake"></i> Sport Partners</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table small table-bordered">
+                            <thead class="bg-success text-white">
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for partner in sport_partners %}
+                                <tr>
+                                    <td>{{ partner.company_name }}</td>
+                                    <td>{{ partner.company_email }}</td>
+                                    <td>{{ partner.company_phone }}</td>
+                                    <td>{{ partner.company_address }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Tables for Other Models -->
+    <div class="row">
+        <!-- Sport Workers Table -->
+        <div class="col-md-6 mb-4">
+            <div class="shadow">
+                <div class="card-header bg-info text-white">
+                    <h6 class="card-title mb-0"><i class="fas fa-users"></i> Sport Workers</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table small table-bordered">
+                            <thead class="bg-info text-white">
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Phone</th>
+                                    <th>Partner</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for worker in sport_workers %}
+                                <tr>
+                                    <td>{{ worker.first_name }}</td>
+                                    <td>{{ worker.last_name }}</td>
+                                    <td>{{ worker.phone_number }}</td>
+                                    <td>{{ worker.sport_partner.company_name }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sport Activities Table -->
+        <div class="col-md-6 mb-4">
+            <div class="shadow">
+                <div class="card-header bg-dark text-white">
+                    <h6 class="card-title mb-0"><i class="fas fa-running"></i> Sport Activities</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table small table-bordered small">
+                            <thead class="bg-dark text-white">
+                                <tr>
+                                    <th>Activity Name</th>
+                                    <th>Provider</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for activity in sport_activities %}
+                                <tr>
+                                    <td>{{ activity.activity_name }}</td>
+                                    <td>{{ activity.sport_provider.company_name }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Initialize Charts -->
+    <script>
+        // Data from Django context
+        const data = {
+            providers: {{ total_providers }},
+            partners: {{ total_partners }},
+            workers: {{ total_workers }},
+            activities: {{ total_activities }},
+            contracts: {{ total_contracts }},
+            attendances: {{ total_attendances }},
+        };
+    
+        // Function to create a bar chart
+        function createBarChart(canvasId, label, value, backgroundColor) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [label],
+                    datasets: [{
+                        label: label,
+                        data: [value],
+                        backgroundColor: backgroundColor,
+                        borderColor: backgroundColor,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+    
+        // Initialize charts
+        createBarChart('providersChart', 'Providers', data.providers, 'rgba(0, 123, 255, 0.8)');
+        createBarChart('partnersChart', 'Partners', data.partners, 'rgba(40, 167, 69, 0.8)');
+        createBarChart('workersChart', 'Workers', data.workers, 'rgba(23, 162, 184, 0.8)');
+        createBarChart('activitiesChart', 'Activities', data.activities, 'rgba(255, 193, 7, 0.8)');
+        createBarChart('contractsChart', 'Contracts', data.contracts, 'rgba(220, 53, 69, 0.8)');
+        createBarChart('attendancesChart', 'Attendances', data.attendances, 'rgba(108, 117, 125, 0.8)');
+    </script>
 {% endblock %}

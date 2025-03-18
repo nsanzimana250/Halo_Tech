@@ -1,6 +1,7 @@
 from django.urls import path
 from App import views
-from .views import  daily_report,monthly_report,AllsportWorker,Contract_list,day_report,Monthly_Report,Custom_Report,custom_reports,halo_tech_dashboard,SportProvidepage,SportPartnerpage
+from .views import  daily_report,monthly_report,AllsportWorker,Contract_list,day_report,SportProviderDetails,SportPartner_details,AllowedActivitys
+from .views import  Monthly_Report,Custom_Report,custom_reports,halo_tech_dashboard,SportProvidepage,SportPartnerpage ,users,CreateContract
 
 urlpatterns = [
     path('login/', views.user_login, name='login'),
@@ -22,8 +23,14 @@ urlpatterns = [
 
     # halo_tech_dashboard
     path('halo_tech_dashboard/', halo_tech_dashboard, name='halo_tech_dashboard'),
-     path('halo_tech_dashboard/SportProvidepage/', SportProvidepage, name='SportProvidepage'),
-      path('halo_tech_dashboard/SportProvidepage/', SportProvidepage, name='SportProvidepage'),
+    path('halo_tech_dashboard/SportProvidepage/', SportProvidepage, name='SportProvidepage'),
+    path('halo_tech_dashboard/SportPartnerpage/', SportPartnerpage, name='SportPartnerpage'),
+    path('halo_tech_dashboard/users/', users, name='users'),
+    path('halo_tech_dashboard/sport_provider_details/<int:pk>/', SportProviderDetails, name='sport_provider_details'),
+
+    path('halo_tech_dashboard/SportPartner_details/<int:pk>/', SportPartner_details, name='SportPartner_details'),
+    path('halo_tech_dashboard/CreateContract', CreateContract, name='CreateContract'),
+    path('halo_tech_dashboard/AllowedActivitys', AllowedActivitys, name='AllowedActivity'),
 
 
     

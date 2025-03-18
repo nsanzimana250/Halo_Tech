@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-
 class SportProvider(models.Model):
     company_name = models.CharField(max_length=255)
     company_email = models.EmailField(unique=True)
@@ -12,7 +11,6 @@ class SportProvider(models.Model):
 
     def __str__(self):
         return self.company_name
-
 
 class SportPartner(models.Model):
     company_name = models.CharField(max_length=255)
@@ -32,22 +30,18 @@ class SportWorker(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-    
-    from django.db import models
 
 class SportCode(models.Model):
     code = models.CharField(max_length=50, unique=True)
-    sport_worker = models.ForeignKey(
-        'SportWorker', on_delete=models.CASCADE, related_name='sport_codes'
-    )
-    
+    sport_worker = models.ForeignKey(SportWorker, on_delete=models.CASCADE, related_name='sport_codes')
+
     def __str__(self):
         return self.code
-
 
 class SportActivity(models.Model):
     sport_provider = models.ForeignKey(SportProvider, on_delete=models.CASCADE, related_name='sport_activities')
     activity_name = models.CharField(max_length=255)
+
     def __str__(self):
         return self.activity_name
 
@@ -66,7 +60,6 @@ class Contract(models.Model):
     def clean(self):
         if self.start_date >= self.end_date:
             raise ValidationError("Start date must be before end date.")
-        
 
 class Attendance(models.Model):
     sport_provider = models.ForeignKey(SportProvider, on_delete=models.CASCADE, related_name="attendances")
@@ -78,7 +71,6 @@ class Attendance(models.Model):
 
     def __str__(self):
         return f"{self.sport_work.first_name} {self.sport_work.last_name} - {self.sport_activity.activity_name} on {self.activity_date} at {self.activity_time}"
-
 
 class AllowedActivity(models.Model):
     contract = models.ForeignKey(Contract, on_delete=models.CASCADE, related_name="allowed_activities")
