@@ -174,3 +174,42 @@ class AllowedActivityForm(forms.ModelForm):
                 'style': 'width: 25px; height: 25px;',  # Increase checkbox size
             }),
         }
+
+from django import forms
+from .models import SportProvider, SportPartner
+
+class AttendanceReportForm(forms.Form):
+    sport_provider = forms.ModelChoiceField(
+        queryset=SportProvider.objects.all(), 
+        required=False, 
+        label="Sport Provider",
+        widget=forms.Select(attrs={
+            'class': 'form-control',  # Bootstrap class for form control
+            'placeholder': 'Select Sport Provider',
+        })
+    )
+    sport_partner = forms.ModelChoiceField(
+        queryset=SportPartner.objects.all(), 
+        required=False, 
+        label="Sport Partner",
+        widget=forms.Select(attrs={
+            'class': 'form-control',  # Bootstrap class for form control
+            'placeholder': 'Select Sport Partner',
+        })
+    )
+    from_date = forms.DateField(
+        required=False, 
+        label="From Date",
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',  # Bootstrap class for form control
+            'type': 'date',  # HTML5 date input
+        })
+    )
+    to_date = forms.DateField(
+        required=False, 
+        label="To Date",
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',  # Bootstrap class for form control
+            'type': 'date',  # HTML5 date input
+        })
+    )

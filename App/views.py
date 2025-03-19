@@ -184,6 +184,7 @@ def Contract_list(request):
         return redirect('login')
     
     contracts = Contract.objects.filter(sport_provider=sport_provider)
+    total_contracts = contracts.count() 
     
     context = {
                 'company_name': sport_provider.company_name,
@@ -191,7 +192,8 @@ def Contract_list(request):
         'company_phone': sport_provider.company_phone,
         'company_address': sport_provider.company_address,
         'sport_provider': sport_provider,
-        'contract_records': contracts,  # Make sure this matches the template variable
+        'contract_records': contracts,
+          'total_contracts': total_contracts,  # Make sure this matches the template variable
     }
     return render(request, 'sport_provider_dashboard/Contract.html', context)
 
@@ -526,6 +528,33 @@ def Custom_Report(request):
 
 
 
+
+
+def Contracts_SportPartner(request):
+    user = request.user
+    sport_partner = SportPartner.objects.filter(user=user).first()
+    
+    if not sport_partner:
+        return redirect('login')
+
+    contracts = Contract.objects.filter(sport_partner=sport_partner)
+    total_contracts = contracts.count()  # Count total contracts
+
+    context = {
+        'company_name': sport_partner.company_name,
+        'company_email': sport_partner.company_email,
+        'company_phone': sport_partner.company_phone,
+        'company_address': sport_partner.company_address,
+        'role': "Sport Partner",
+        'contracts': contracts,
+        'total_contracts': total_contracts,  # Pass the count to the template
+    }
+
+    return render(request, "sport_pertner_dashboard/Contracts.html", context)
+
+
+
+
 # import africastalking
 
 # africastalking.initialize(username='heloteck', api_key='atsk_c5c688c3b92798e5d6df618317734b7edd81cf547a8e70a3e33ebcfe19e61b0deb6ab53a')
@@ -814,3 +843,51 @@ def AllowedActivitys(request):
         'form': form,
         'allowed_activities': allowed_activities,
     })
+
+
+
+
+from django.shortcuts import render
+from .forms import AttendanceReportForm
+from .models import Attendance
+
+def attendance_report(request):
+    """Render the report page with a form."""
+    form = AttendanceReportForm(request.GET or None)
+    return render(request, 'halo_tech_dashboard/Report.html', {'form': form})
+
+def filtered_results(request):
+    """Handle filtering logic and render the report page with details."""
+    form = AttendanceReportForm(request.GET or None)
+    attendances = Attendance.objects.all()  # Default: return all records
+
+    # Extract filter values
+    sport_provider = None
+    sport_partner = None
+    from_date = None
+    to_date = None
+
+    if form.is_valid():
+        sport_provider = form.cleaned_data.get('sport_provider')
+        sport_partner = form.cleaned_data.get('sport_partner')
+        from_date = form.cleaned_data.get('from_date')
+        to_date = form.cleaned_data.get('to_date')
+
+        if sport_provider:
+            attendances = attendances.filter(sport_provider=sport_provider)
+        if sport_partner:
+            attendances = attendances.filter(sport_partner=sport_partner)
+        if from_date:
+            attendances = attendances.filter(activity_date__gte=from_date)
+        if to_date:
+            attendances = attendances.filter(activity_date__lte=to_date)
+
+    # Pass filter values and attendance data to the template
+    return render(request, 'halo_tech_dashboard/FilteredResults.html', {
+        'attendances': attendances,
+        'sport_provider': sport_provider,
+        'sport_partner': sport_partner,
+        'from_date': from_date,
+        'to_date': to_date
+    })
+
